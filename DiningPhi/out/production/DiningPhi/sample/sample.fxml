@@ -78,7 +78,7 @@
             <Font size="18.0" />
          </font>
         </Label>
-        <Label fx:id="philosopherBottomRight" text="User 4" textFill="#a93226" GridPane.columnIndex="2" GridPane.rowIndex="2">
+        <Label fx:id="philosopherBottomRight" text="User 4" textFill="#bd61ce" GridPane.columnIndex="2" GridPane.rowIndex="2">
             <GridPane.margin>
                 <Insets left="75.0" />
             </GridPane.margin>
@@ -88,7 +88,7 @@
         </Label>
         <Button fx:id="startFailButton" mnemonicParsing="false" onAction="#onStartFailButtonPressed" text="Start Fail" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
-                <Insets left="15.0" />
+                <Insets left="75.0" />
             </GridPane.margin>
         </Button>
         <Button fx:id="startCorrectButton" mnemonicParsing="false" onAction="#onStartCorrectButtonPressed" text="Start Correct" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -152,9 +152,9 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="userBottomRightWorking" text="Working" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
+      <Label fx:id="userBottomRightWorking" text="(Working)" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <GridPane.margin>
-            <Insets left="65.0" top="35.0" />
+            <Insets left="60.0" top="35.0" />
          </GridPane.margin>
          <font>
             <Font size="18.0" />
@@ -220,7 +220,7 @@
         </ImageView>
       <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#pauseBtnAction" text="Pause / Continue" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <GridPane.margin>
-            <Insets left="15.0" top="75.0" />
+            <Insets left="52.0" top="75.0" />
          </GridPane.margin>
       </Button>
       <Button fx:id="startPerfectBtn" mnemonicParsing="false" onAction="#startPerfectAction" text="Start perfect" GridPane.columnIndex="1" GridPane.rowIndex="1">

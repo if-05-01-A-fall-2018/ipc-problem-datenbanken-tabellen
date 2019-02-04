@@ -44,7 +44,7 @@ public class Controller implements Initializable {
 
         User userTopLeft = new User("User Top Left", userTopLeftWorking, "#0000FF", tableOnLeft, tableOnTop);
         User userTopRight = new User("User Top Right", userTopRightWorking, "#FFA500", tableOnTop, tableOnRight);
-        User userBottomRight = new User("User Bottom Right", userBottomRightWorking, "#A93226", tableOnRight, tableOnBottom);
+        User userBottomRight = new User("User Bottom Right", userBottomRightWorking, "#BD61CE", tableOnRight, tableOnBottom);
         User userBottomLeft = new User("User Bottom Left", userBottomLeftWorking, "#008000", tableOnBottom, tableOnLeft);
 
         allUsers.add(userTopLeft);
@@ -61,11 +61,9 @@ public class Controller implements Initializable {
     public void onStartFailButtonPressed(ActionEvent actionEvent) {
         lockAllTables();
         stopAnimation();
-
-        for (User user : allUsers) {
-            user.setPriority(-1);
+        for (int i = 0; i < allUsers.size(); i++) {
+            allUsers.get(i).setPriority(-1);
         }
-
         failTimer = new Timeline(new KeyFrame(
                 Duration.millis(3000),
                 ae -> onTimerTick()));
@@ -88,17 +86,8 @@ public class Controller implements Initializable {
     }
 
     public void startPerfectAction(ActionEvent actionEvent) {
-        lockAllTables();
-        stopAnimation();
+        onStartCorrectButtonPressed(new ActionEvent());
 
-        for (int i = 0; i < allUsers.size(); i++) {
-            allUsers.get(i).setPriority(0);
-        }
-        perfectTimer = new Timeline(new KeyFrame(
-                Duration.millis(3000),
-                ae -> onTimerTickPerfect()));
-        perfectTimer.setCycleCount(Animation.INDEFINITE);
-        perfectTimer.playFromStart();
         for (int i = 0; i < allUsers.size(); i++) {
             if (i % 2 == 0) allUsers.get(i).setPriority(90);
             else allUsers.get(i).setPriority(100);
@@ -106,36 +95,12 @@ public class Controller implements Initializable {
     }
 
     public void onTimerTick(){
-        for (int i = 0; i < allUsers.size(); i++) {
-            allUsers.get(i).lockTable(0, "User Bottom Left");
-            System.out.println("Priority " + allUsers.get(i).getName() + ": " + allUsers.get(i).getPriority());
-        }
+        startSimulation("User Bottom Left");
     }
 
     public void onTimerTickCorrect(){
 
-        for (int i = 0; i < allUsers.size(); i++) {
-            allUsers.get(i).lockTable(0, "");
-            System.out.println("Priority " + allUsers.get(i).getName() + ": " + allUsers.get(i).getPriority());
-        }
-        for (int i = 0; i < allUsers.size(); i++) {
-            allUsers.get(i).checkTablesForWork();
-        }
-
-    }
-
-    public void onTimerTickPerfect(){
-        boolean swapPriorities = false;
-
-        for (int i = 0; i < allUsers.size(); i++) {
-            allUsers.get(i).lockTable(0, "");
-
-            System.out.println("Priority " + allUsers.get(i).getName() + ": " + allUsers.get(i).getPriority());
-        }
-        for (int i = 0; i < allUsers.size(); i++) {
-            if (allUsers.get(i).checkTablesForWork()) swapPriorities = true;
-        }
-
+        startSimulation("");
 
     }
 
@@ -151,9 +116,8 @@ public class Controller implements Initializable {
         else if (failTimer != null && failTimer.getStatus() == Animation.Status.RUNNING) failTimer.pause();
         else if (correctTimer != null && correctTimer.getStatus() == Animation.Status.PAUSED) correctTimer.playFromStart();
         else if (failTimer != null && failTimer.getStatus() == Animation.Status.PAUSED) failTimer.playFromStart();
-        else if (perfectTimer != null && perfectTimer.getStatus() == Animation.Status.RUNNING) perfectTimer.pause();
-        else if (perfectTimer != null && perfectTimer.getStatus() == Animation.Status.PAUSED) perfectTimer.playFromStart();
         else return;
+
         if (pauseCount == 1) {
             System.out.println("Continued.");
             pauseCount--;
@@ -166,6 +130,15 @@ public class Controller implements Initializable {
     public void stopAnimation(){
         if (correctTimer != null && correctTimer.getStatus() == Animation.Status.RUNNING) correctTimer.stop();
         else if (failTimer != null && failTimer.getStatus() == Animation.Status.RUNNING) failTimer.stop();
-        else if (perfectTimer != null && perfectTimer.getStatus() == Animation.Status.RUNNING) perfectTimer.stop();
+    }
+
+    public void startSimulation(String fail){
+        for (int i = 0; i < allUsers.size(); i++) {
+            allUsers.get(i).lockTable(0, fail);
+            System.out.println("Priority " + allUsers.get(i).getName() + ": " + allUsers.get(i).getPriority());
+        }
+        for (int i = 0; i < allUsers.size(); i++) {
+            allUsers.get(i).checkTablesForWork();
+        }
     }
 }
