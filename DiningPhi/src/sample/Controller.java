@@ -60,9 +60,11 @@ public class Controller implements Initializable {
 
     public void onStartFailButtonPressed(ActionEvent actionEvent) {
         lockAllTables();
-        if (correctTimer != null && correctTimer.getStatus() == Animation.Status.RUNNING) correctTimer.stop();
-        else if (failTimer != null && failTimer.getStatus() == Animation.Status.RUNNING) failTimer.stop();
-        else if (perfectTimer != null && perfectTimer.getStatus() == Animation.Status.RUNNING) perfectTimer.stop();
+        stopAnimation();
+
+        for (User user : allUsers) {
+            user.setPriority(-1);
+        }
 
         failTimer = new Timeline(new KeyFrame(
                 Duration.millis(3000),
@@ -73,9 +75,7 @@ public class Controller implements Initializable {
 
     public void onStartCorrectButtonPressed(ActionEvent actionEvent) {
         lockAllTables();
-        if (correctTimer != null && correctTimer.getStatus() == Animation.Status.RUNNING) correctTimer.stop();
-        else if (failTimer != null && failTimer.getStatus() == Animation.Status.RUNNING) failTimer.stop();
-        else if (perfectTimer != null && perfectTimer.getStatus() == Animation.Status.RUNNING) perfectTimer.stop();
+        stopAnimation();
 
         for (int i = 0; i < allUsers.size(); i++) {
             allUsers.get(i).setPriority(0);
@@ -89,9 +89,7 @@ public class Controller implements Initializable {
 
     public void startPerfectAction(ActionEvent actionEvent) {
         lockAllTables();
-        if (correctTimer != null && correctTimer.getStatus() == Animation.Status.RUNNING) correctTimer.stop();
-        else if (failTimer != null && failTimer.getStatus() == Animation.Status.RUNNING) failTimer.stop();
-        else if (perfectTimer != null && perfectTimer.getStatus() == Animation.Status.RUNNING) perfectTimer.stop();
+        stopAnimation();
 
         for (int i = 0; i < allUsers.size(); i++) {
             allUsers.get(i).setPriority(0);
@@ -148,13 +146,14 @@ public class Controller implements Initializable {
         }
     }
 
-    public void pauseBtnAction(ActionEvent actionEvent){
+    public void pauseBtnAction(ActionEvent actionEvent) {
         if (correctTimer != null && correctTimer.getStatus() == Animation.Status.RUNNING) correctTimer.pause();
         else if (failTimer != null && failTimer.getStatus() == Animation.Status.RUNNING) failTimer.pause();
         else if (correctTimer != null && correctTimer.getStatus() == Animation.Status.PAUSED) correctTimer.playFromStart();
         else if (failTimer != null && failTimer.getStatus() == Animation.Status.PAUSED) failTimer.playFromStart();
         else if (perfectTimer != null && perfectTimer.getStatus() == Animation.Status.RUNNING) perfectTimer.pause();
         else if (perfectTimer != null && perfectTimer.getStatus() == Animation.Status.PAUSED) perfectTimer.playFromStart();
+        else return;
         if (pauseCount == 1) {
             System.out.println("Continued.");
             pauseCount--;
@@ -162,5 +161,11 @@ public class Controller implements Initializable {
         }
         System.out.println("Paused.");
         pauseCount++;
+    }
+
+    public void stopAnimation(){
+        if (correctTimer != null && correctTimer.getStatus() == Animation.Status.RUNNING) correctTimer.stop();
+        else if (failTimer != null && failTimer.getStatus() == Animation.Status.RUNNING) failTimer.stop();
+        else if (perfectTimer != null && perfectTimer.getStatus() == Animation.Status.RUNNING) perfectTimer.stop();
     }
 }
