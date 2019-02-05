@@ -152,9 +152,9 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="userBottomRightWorking" text="(Working)" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
+      <Label fx:id="userBottomRightWorking" text="Working" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <GridPane.margin>
-            <Insets left="60.0" top="35.0" />
+            <Insets left="65.0" top="35.0" />
          </GridPane.margin>
          <font>
             <Font size="18.0" />

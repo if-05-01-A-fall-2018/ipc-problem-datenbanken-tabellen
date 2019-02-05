@@ -29,7 +29,8 @@ public class Controller implements Initializable {
     int pauseCount = 0;
 
     private Timeline failTimer = null;
-    private Timeline timer = null;
+    private Timeline correctTimer = null;
+    private Timeline perfectTimer = null;
 
     List<User> allUsers = new LinkedList<>();
     List<Table> allTables = new LinkedList<>();
@@ -63,11 +64,11 @@ public class Controller implements Initializable {
         for (int i = 0; i < allUsers.size(); i++) {
             allUsers.get(i).setPriority(-1);
         }
-        timer = new Timeline(new KeyFrame(
+        failTimer = new Timeline(new KeyFrame(
                 Duration.millis(3000),
                 ae -> onTimerTick()));
-        timer.setCycleCount(Animation.INDEFINITE);
-        timer.playFromStart();
+        failTimer.setCycleCount(Animation.INDEFINITE);
+        failTimer.playFromStart();
     }
 
     public void onStartCorrectButtonPressed(ActionEvent actionEvent) {
@@ -77,19 +78,19 @@ public class Controller implements Initializable {
         for (int i = 0; i < allUsers.size(); i++) {
             allUsers.get(i).setPriority(0);
         }
-        timer = new Timeline(new KeyFrame(
+        correctTimer = new Timeline(new KeyFrame(
                 Duration.millis(3000),
                 ae -> onTimerTickCorrect()));
-        timer.setCycleCount(Animation.INDEFINITE);
-        timer.playFromStart();
+        correctTimer.setCycleCount(Animation.INDEFINITE);
+        correctTimer.playFromStart();
     }
 
     public void startPerfectAction(ActionEvent actionEvent) {
         onStartCorrectButtonPressed(new ActionEvent());
 
         for (int i = 0; i < allUsers.size(); i++) {
-            if (i % 2 == 0) allUsers.get(i).setPriority(40);
-            else allUsers.get(i).setPriority(50);
+            if (i % 2 == 0) allUsers.get(i).setPriority(90);
+            else allUsers.get(i).setPriority(100);
         }
     }
 
@@ -111,9 +112,9 @@ public class Controller implements Initializable {
     }
 
     public void pauseBtnAction(ActionEvent actionEvent) {
-        if (timer != null && timer.getStatus() == Animation.Status.RUNNING) timer.pause();
+        if (correctTimer != null && correctTimer.getStatus() == Animation.Status.RUNNING) correctTimer.pause();
         else if (failTimer != null && failTimer.getStatus() == Animation.Status.RUNNING) failTimer.pause();
-        else if (timer != null && timer.getStatus() == Animation.Status.PAUSED) timer.playFromStart();
+        else if (correctTimer != null && correctTimer.getStatus() == Animation.Status.PAUSED) correctTimer.playFromStart();
         else if (failTimer != null && failTimer.getStatus() == Animation.Status.PAUSED) failTimer.playFromStart();
         else return;
 
@@ -127,13 +128,14 @@ public class Controller implements Initializable {
     }
 
     public void stopAnimation(){
-        if (timer != null && timer.getStatus() == Animation.Status.RUNNING) timer.stop();
+        if (correctTimer != null && correctTimer.getStatus() == Animation.Status.RUNNING) correctTimer.stop();
+        else if (failTimer != null && failTimer.getStatus() == Animation.Status.RUNNING) failTimer.stop();
     }
 
     public void startSimulation(String fail){
         for (int i = 0; i < allUsers.size(); i++) {
             allUsers.get(i).lockTable(0, fail);
-            System.out.println(String.format("%-" + 35 + "s", "Priority " + allUsers.get(i).getName() + ": ") + allUsers.get(i).getPriority()+"   times worked: " + allUsers.get(i).getTimesWorked() );
+            System.out.println("Priority " + allUsers.get(i).getName() + ": " + allUsers.get(i).getPriority());
         }
         for (int i = 0; i < allUsers.size(); i++) {
             allUsers.get(i).checkTablesForWork();

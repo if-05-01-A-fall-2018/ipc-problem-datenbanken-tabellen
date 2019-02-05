@@ -12,7 +12,6 @@ public class User {
     private String color;
     private Table[] tablesUsed = new Table[2];
     private int priority = -1;
-    private int timesWorked = 0;
 
 
     public User(String name, Label working, String color, Table first, Table second) {
@@ -58,15 +57,10 @@ public class User {
         return this.name;
     }
 
-    public String getTimesWorked() {
-        return Integer.toString(timesWorked);
-    }
-
     public boolean checkTablesForWork() {
         if (tablesUsed[0].isLocked() == this && tablesUsed[1].isLocked() == this) {
             working.setTextFill(Color.web("#8B0000"));
             this.priority += 50;
-            this.timesWorked++;
             return true;
         }
         else{
