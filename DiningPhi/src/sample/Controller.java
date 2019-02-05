@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 
@@ -26,6 +27,7 @@ public class Controller implements Initializable {
     public Label userTopLeftWorking;
     public Label userTopRightWorking;
     public Label userBottomRightWorking;
+    public Button pauseButton;
     int pauseCount = 0;
 
     private Timeline failTimer = null;
@@ -46,6 +48,8 @@ public class Controller implements Initializable {
         User userBottomRight = new User("User Bottom Right", userBottomRightWorking, "#BD61CE", tableOnRight, tableOnBottom);
         User userBottomLeft = new User("User Bottom Left", userBottomLeftWorking, "#008000", tableOnBottom, tableOnLeft);
 
+        pauseButton.setDisable(true);
+
         allUsers.add(userTopLeft);
         allUsers.add(userTopRight);
         allUsers.add(userBottomRight);
@@ -60,6 +64,8 @@ public class Controller implements Initializable {
     public void onStartFailButtonPressed(ActionEvent actionEvent) {
         lockAllTables();
         stopAnimation();
+        pauseButton.setDisable(false);
+
         for (int i = 0; i < allUsers.size(); i++) {
             allUsers.get(i).setPriority(-1);
         }
@@ -73,6 +79,7 @@ public class Controller implements Initializable {
     public void onStartCorrectButtonPressed(ActionEvent actionEvent) {
         lockAllTables();
         stopAnimation();
+        pauseButton.setDisable(false);
 
         for (int i = 0; i < allUsers.size(); i++) {
             allUsers.get(i).setPriority(0);
@@ -115,7 +122,6 @@ public class Controller implements Initializable {
         else if (failTimer != null && failTimer.getStatus() == Animation.Status.RUNNING) failTimer.pause();
         else if (timer != null && timer.getStatus() == Animation.Status.PAUSED) timer.playFromStart();
         else if (failTimer != null && failTimer.getStatus() == Animation.Status.PAUSED) failTimer.playFromStart();
-        else return;
 
         if (pauseCount == 1) {
             System.out.println("Continued.");
@@ -131,10 +137,12 @@ public class Controller implements Initializable {
     }
 
     public void startSimulation(String fail){
+
         for (int i = 0; i < allUsers.size(); i++) {
             allUsers.get(i).lockTable(0, fail);
             System.out.println(String.format("%-" + 35 + "s", "Priority " + allUsers.get(i).getName() + ": ") + allUsers.get(i).getPriority()+"   times worked: " + allUsers.get(i).getTimesWorked() );
         }
+        System.out.println();
         for (int i = 0; i < allUsers.size(); i++) {
             allUsers.get(i).checkTablesForWork();
         }
